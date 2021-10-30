@@ -25,7 +25,7 @@ void DataHandler::readInputData (std::string path)
     uint32_t num_cols = 0;
 
     unsigned char bytes[4];
-    FILE *f = fopen (path.c_str(), "r");
+    FILE *f = fopen (path.c_str(), "rb");
     if (f)
     {
         for (int i = 0; i < 4; i++)
@@ -82,7 +82,7 @@ void DataHandler::readLabelData (std::string path)
     uint32_t num_items = 0;
 
     unsigned char bytes[4];
-    FILE *f = fopen (path.c_str(), "r");
+    FILE *f = fopen (path.c_str(), "rb");
     if (f)
     {
         for (int i = 0; i < 2; i++)
@@ -122,6 +122,9 @@ void DataHandler::splitData()
     int trainingSize = dataArray->size() * TRAIN_SET_PERCENT;
     int testSize = dataArray->size() * TEST_SET_PERCENT;
     int validationSize = dataArray->size() * VALIDATION_SET_PERCENT;
+
+    // shuffle data
+    std::_Random_shuffle1 (dataArray->begin(), dataArray->end());
 
     int dataArrayIdx = 0;
 
