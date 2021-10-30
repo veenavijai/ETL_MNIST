@@ -119,10 +119,64 @@ void DataHandler::readLabelData (std::string path)
 
 void DataHandler::splitData()
 {
+    int trainingSize = dataArray->size() * TRAIN_SET_PERCENT;
+    int testSize = dataArray->size() * TEST_SET_PERCENT;
+    int validationSize = dataArray->size() * VALIDATION_SET_PERCENT;
 
+    int dataArrayIdx = 0;
+
+    // Training data
+    int count = 0;
+    while (count < trainingSize)
+    {
+        trainingData->push_back (dataArray->at(dataArrayIdx++));
+        count++;
+    }
+
+    // Test data
+    count = 0;
+    while (count < testSize)
+    {
+        testData->push_back (dataArray->at(dataArrayIdx++));
+        count++;
+    }
+
+    // Validation data
+    count = 0;
+    while (count < validationSize)
+    {
+        validationData->push_back (dataArray->at(dataArrayIdx++));
+        count++;
+    }
+
+    printf ("Training data size: %lu \n", trainingData->size());
+    printf ("Test data size: %lu \n", testData->size());
+    printf ("Validation data size: %lu \n", validationData->size());  
 }
 
-void DataHandler::countClasses();
+void DataHandler::countClasses()
+{
+    int classCount = 0;
+
+    for (unsigned int i = 0; i < dataArray->size(); i++)
+    {
+        uint8_t curLabel = dataArray->at(i)->getLabel();
+        // check if the existing label is already a key in the map
+        if (classFromInt.find (curLabel) == classFromInt.end())
+        {
+            classFromInt[curLabel] = classCount;
+            dataArray->at(i)->setEnumeratedLabel (classCount);
+            classCount++;
+        }
+        else
+        {
+            dataArray->at(i)->setEnumeratedLabel (classFromInt[curLabel]);
+        }
+    }
+    
+    class_counts = classCount;
+    printf ("Extracted %d unique classes", class_counts);
+}
 
 uint32_t DataHandler::formatData(const unsigned char* bytes)
 {

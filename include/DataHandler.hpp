@@ -9,12 +9,12 @@
 #include <map>
 #include <unordered_set>
 
-class data_handler
+class DataHandler
 {
-    std::vector<Data *> dataArray;     // all the data, pre-split
-    std::vector<Data *> *trainingData;
-    std::vector<Data *> *testData;
-    std::vector<Data *> *validationData;
+    std::vector<Data *> * dataArray;     // all the data, pre-split
+    std::vector<Data *> * trainingData;
+    std::vector<Data *> * testData;
+    std::vector<Data *> * validationData;
 
     int class_counts;
     int featureVectorSize;
@@ -25,10 +25,10 @@ class data_handler
     // set the splits
     const double TRAIN_SET_PERCENT = 0.75;
     const double TEST_SET_PERCENT = 0.20;
-    const double VALIDATION_PERCENT = 0.05;
+    const double VALIDATION_SET_PERCENT = 0.05;
 
-    dataHandler();
-    ~dataHandler();
+    DataHandler();
+    ~DataHandler();
 
     void readInputData (std::string path);
     void readLabelData (std::string path);
